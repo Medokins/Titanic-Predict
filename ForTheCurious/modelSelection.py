@@ -18,7 +18,7 @@ trainDf.drop("Cabin", axis=1, inplace=True)
 trainDf.drop("Embarked", axis=1, inplace=True)
 preprocessData(trainDf)
 
-trainDf.dropna(inplace=True)
+trainDf = trainDf.astype(float)
 
 X = trainDf.drop('Survived', axis = 1).values
 X = preprocessing.scale(X)
