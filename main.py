@@ -13,6 +13,7 @@ trainDf = trainDf.drop("PassengerId", axis=1)
 
 preprocessData(trainDf)
 
+
 Xtrain = trainDf.drop('Survived', axis=1).values
 ytrain = trainDf['Survived'].values
 
