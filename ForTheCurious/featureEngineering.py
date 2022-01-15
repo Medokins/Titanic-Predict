@@ -1,9 +1,6 @@
 from hashlib import new
 import pandas as pd
 
-testDf = pd.read_csv("datasets/test.csv")
-trainDf = pd.read_csv("datasets/train.csv")
-
 def preprocessData(df):
     titleList = ['Mrs', 'Mr', 'Master', 'Miss', 'Major', 'Rev', 'Dr', 'Ms', 'Mlle','Col', 'Capt', 'Mme', 'Countess', 'Don', 'Jonkheer']
     titleDict = {
@@ -50,7 +47,10 @@ def preprocessData(df):
 
 
         if type(df["Age"][i]) != int:
-            df.at[i, "Sex"] = 0
+            df.at[i, "Age"] = 0
+
+        if type(df["Fare"][i]) != float:
+            df.at[i, "Fare"] = 0
         
 
         i += 1
