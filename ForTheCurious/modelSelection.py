@@ -11,6 +11,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn import svm
 
+#I'll test more models soon, but as far as I'm concerned those are the best to test the data on
 trainDf = pd.read_csv("datasets/train.csv")
 testDf = pd.read_csv("datasets/test.csv")
 
