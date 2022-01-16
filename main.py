@@ -10,9 +10,7 @@ testDf = pd.read_csv("ForTheCurious/datasets/test.csv")
 
 preprocessData(trainDf, testDf)
 
-print(testDf.head(10))
-
-model = pickle.load(open('model.pkl', 'rb'))
+model = pickle.load(open('model.pkl', 'rb')) #You can test different models here, and to see Your accuray submit Your prediction to Kaggle Titanic Competition
 predictionDict = {"PassengerId":[], "Survived": []}
 
 for i in range(len(testDf)):
