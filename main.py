@@ -5,13 +5,12 @@ from ForTheCurious.featureEngineering import preprocessData
 
 verbose = True
 
+trainDf = pd.read_csv("ForTheCurious/datasets/train.csv")
 testDf = pd.read_csv("ForTheCurious/datasets/test.csv")
-testDf.drop("Ticket", axis=1, inplace=True)
-testDf.drop("Cabin", axis=1, inplace=True)
-testDf.drop("Embarked", axis=1, inplace=True)
 
-preprocessData(testDf)
-testDf = testDf.astype(float)
+preprocessData(trainDf, testDf)
+
+print(testDf.head(10))
 
 model = pickle.load(open('model.pkl', 'rb'))
 predictionDict = {"PassengerId":[], "Survived": []}

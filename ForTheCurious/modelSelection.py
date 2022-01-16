@@ -12,13 +12,9 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn import svm
 
 trainDf = pd.read_csv("datasets/train.csv")
-trainDf.drop('PassengerId', axis=1, inplace=True)
-trainDf.drop("Ticket", axis=1, inplace=True)
-trainDf.drop("Cabin", axis=1, inplace=True)
-trainDf.drop("Embarked", axis=1, inplace=True)
-preprocessData(trainDf)
+testDf = pd.read_csv("datasets/test.csv")
 
-trainDf = trainDf.astype(float)
+preprocessData(trainDf, testDf)
 
 X = trainDf.drop('Survived', axis = 1).values
 X = preprocessing.scale(X)

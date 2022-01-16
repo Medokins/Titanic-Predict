@@ -5,13 +5,9 @@ import matplotlib.pyplot as plt
 from featureEngineering import preprocessData
 
 trainDf = pd.read_csv("datasets/train.csv")
+testDf = pd.read_csv("datasets/test.csv")
 
-trainDf.drop('PassengerId', axis=1, inplace=True)
-trainDf.drop("Ticket", axis=1, inplace=True)
-trainDf.drop("Cabin", axis=1, inplace=True)
-trainDf.drop("Embarked", axis=1, inplace=True)
-
-preprocessData(trainDf)
+preprocessData(trainDf, testDf)
 
 corrmat = trainDf.corr()
 top_corr_features = corrmat.index
