@@ -80,6 +80,15 @@ def preprocessData(train_df, test_df):
         dataset.loc[ dataset['Fare'] > 250, 'Fare'] = 5
         dataset['Fare'] = dataset['Fare'].astype(int)
 
+        #adding new features:
+
+        #1. Age times Class
+        dataset['Age_Class']= dataset['Age']* dataset['Pclass']
+        #2. Fare per Person
+        dataset['Fare_Per_Person'] = dataset['Fare']/(dataset['SibSp']+1)
+        dataset['Fare_Per_Person'] = dataset['Fare_Per_Person'].astype(int)
+        
+
     train_df.drop(['Cabin'], axis=1, inplace=True)
     test_df.drop(['Cabin'], axis=1, inplace=True)
     train_df.drop(['Name'], axis=1, inplace=True)
