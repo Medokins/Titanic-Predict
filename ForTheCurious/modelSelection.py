@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from featureEngineering import preprocessData
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
@@ -9,6 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import Perceptron
 from sklearn import svm
 
 #I'll test more models soon, but as far as I'm concerned those are the best to test the data on
@@ -53,20 +55,26 @@ scv_model = svm.SVC(kernel = 'linear')
 scv_model.fit(X_train, y_train) 
 acc_svm = round(scv_model.score(X_train, y_train) * 100, 2)
 
+perceptron = Perceptron(max_iter=64)
+perceptron.fit(X_train, y_train)
+Y_pred = perceptron.predict(X_test)
+
+acc_perceptron = round(perceptron.score(X_train, y_train) * 100, 2)
+
 results = pd.DataFrame({
     'Model': ['KNN', 'Logistic Regression', 
               'Random Forest', 'Naive Bayes',
               'Stochastic Gradient Decent', 
-              'Decision Tree', 'Svm'],
+              'Decision Tree', 'Svm', 'Perceptron'],
     'Score': [acc_knn, acc_log, 
               acc_random_forest, acc_gaussian, 
-              acc_sgd, acc_decision_tree, acc_svm]})
+              acc_sgd, acc_decision_tree, acc_svm, acc_perceptron]})
 result_df = results.sort_values(by='Score', ascending=False)
 result_df = result_df.set_index('Score')
-print(result_df.head(7))
+print(result_df.head(8))
 
-models = [knn, logreg, random_forest, gaussian,sgd, decision_tree, scv_model]
-names = ['KNN', 'Logistic Regression', 'Random Forest', 'Naive Bayes', 'Stochastic Gradient Decent', 'Decision Tree', 'Svm']
+models = [knn, logreg, random_forest, gaussian,sgd, decision_tree, scv_model, perceptron]
+names = ['KNN', 'Logistic Regression', 'Random Forest', 'Naive Bayes', 'Stochastic Gradient Decent', 'Decision Tree', 'Svm', 'Perceptron']
 i = 0
 print("\n")
 
@@ -78,3 +86,7 @@ for model in models:
     print("Standard Deviation:", scores.std())
     print("\n")
     i += 1
+
+# importances = pd.DataFrame({'feature':trainDf.columns[1:],'importance':np.round(random_forest.feature_importances_,3)})
+# importances = importances.sort_values('importance',ascending=False).set_index('feature')
+# print(importances.head(15))
