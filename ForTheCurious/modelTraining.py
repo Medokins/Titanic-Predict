@@ -22,4 +22,4 @@ logreg.fit(X_train, y_train)
 random_forest = RandomForestClassifier(n_estimators=100)
 random_forest.fit(X_train, y_train)
 
-pickle.dump(random_forest, open('../model.pkl', 'wb'))
+pickle.dump(logreg, open('../model.pkl', 'wb'))
