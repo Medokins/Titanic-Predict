@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import re
 
@@ -8,11 +7,13 @@ def preprocessData(train_df, test_df):
     train_df.drop(["Ticket"], axis=1, inplace=True)
     test_df.drop(["Ticket"], axis=1, inplace=True)
 
-    titles = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Rare": 5}
+    titles = {'Mrs': 2, 'Mr': 0, 'Master': 1, 'Miss': 2, 'Major': 1, 'Rev': 1,
+                    'Dr':1, 'Ms':2, 'Mlle':2,'Col':1, 'Capt':1, 'Mme':2, 'Countess':3,
+                    'Don':0, 'Jonkheer':0}
 
     genders = {"male": 0, "female": 1}
 
-    deck = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "U": 8}
+    deck = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "U": 0}
     data = [train_df, test_df]
 
     ports = {"S": 0, "C": 1, "Q": 2}
@@ -23,14 +24,14 @@ def preprocessData(train_df, test_df):
     for dataset in data:
         #using Cabin feature
         dataset['Cabin'] = dataset['Cabin'].fillna("U")
-        dataset['Deck'] = dataset['Cabin'].map(lambda x: re.compile("([a-zA-Z]+)").search(x).group())
+        dataset['Deck'] = dataset['Cabin'].map(lambda x: re.compile("([a-zA-Z]+)").search(x).group()) #getting letter of the Deck
         dataset['Deck'] = dataset['Deck'].map(deck)
-        dataset['Deck'] = dataset['Deck'].fillna(0)
+        dataset['Deck'] = dataset['Deck'].fillna(1)
         dataset['Deck'] = dataset['Deck'].astype(np.float)
 
         #using and filling NaN in age feature
         mean = train_df["Age"].mean()
-        std = test_df["Age"].std()
+        std = train_df["Age"].std()
         is_null = dataset["Age"].isnull().sum()
         rand_age = np.random.randint(mean - std, mean + std, size = is_null)
         age_slice = dataset["Age"].copy()
@@ -48,12 +49,6 @@ def preprocessData(train_df, test_df):
 
         #using Name feature, converting name to Int
         dataset['Title'] = dataset.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
-        dataset['Title'] = dataset['Title'].replace(['Lady', 'Countess','Capt', 'Col','Don', 'Dr',\
-                                                'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
-        dataset['Title'] = dataset['Title'].replace('Mlle', 'Miss')
-        dataset['Title'] = dataset['Title'].replace('Ms', 'Miss')
-        dataset['Title'] = dataset['Title'].replace('Mme', 'Mrs')
-
         dataset['Title'] = dataset['Title'].map(titles)
         dataset['Title'] = dataset['Title'].fillna(0)
 
@@ -82,9 +77,7 @@ def preprocessData(train_df, test_df):
 
         #adding new features:
 
-        #1. Age times Class
-        dataset['Age_Class']= dataset['Age']* dataset['Pclass']
-        #2. Fare per Person
+        #Fare per Person
         dataset['Fare_Per_Person'] = dataset['Fare']/(dataset['SibSp']+1)
         dataset['Fare_Per_Person'] = dataset['Fare_Per_Person'].astype(int)
         
